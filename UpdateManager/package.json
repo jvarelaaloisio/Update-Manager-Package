@@ -1,0 +1,19 @@
+{
+  "name": "com.varelaaloisio.updatemanager",
+  "version": "1.2.3",
+  "displayName": "Update Manager",
+  "description": "Update management system made to give control on Unity's Update method",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "keywords": [
+    "updatemanager",
+    "update",
+    "manager"
+  ],
+  "author": {
+    "name": "Juan Pablo",
+    "email": "juampyvarela@gmail.com",
+    "url": "https://github.com/jvarelaaloisio"
+  },
+  "type": "library"
+}
