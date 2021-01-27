@@ -1,4 +1,4 @@
-# Update-Manager-Package
+# Update Manager Package for Unity
 Update management system made to give control on Unity's Update method
 ## How to use
 ### Basic Flow
