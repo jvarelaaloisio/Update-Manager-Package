@@ -20,7 +20,8 @@ Update management system made to give control on Unity's Update method
 		- UnSubscribe
 		- UnSubscribeFixed
 		- UnSubscribeLate
-	2. If the object was subscribed, it will be removed from the updateable list, else there won't be any changes.
+	2. If the object was subscribed, it will be removed from the updateable list,
+		else there won't be any changes.
 ## Extra tools
 ### CountDown Timer
 A simple timer that will raise an event when it's time has finished.
