@@ -29,10 +29,16 @@ A simple timer that will raise an event when it's time has finished.
 Simple/Internal cooldowns that don't need to update a view (for this, it might be better to use an ActionOverTime).
 ### Action Over Time
 A helper that will call a method every Update cycle over a period of time.
-Perfect for things you need to do over a period of time but have a start point and an end point.
+Perfect for temporary behaviour, things you need to do over a period of time but have a start point and an end point.
 #### It works with lerps
 if you need to lerp in the action, you just need to set it in the constructor method to **true** and the method called will be given the lerp state as parameter.
 #### Examples
 Sliding doors when entering/exiting a trigger zone.
+### Action With Frequency
+A helper that will call a method every period of time.
+The best solution for behaviour where you would normally implement a repeating timer or a coroutine.
+#### Examples
+Consuming/refilling stamina.
+Recalculating pathfinding algorithms.
 		
 Hope you can take advantage of this package!

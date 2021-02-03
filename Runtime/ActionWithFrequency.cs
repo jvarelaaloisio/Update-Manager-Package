@@ -3,30 +3,17 @@ using UnityEngine;
 
 namespace Packages.UpdateManagement
 {
-	public class ActionOverTime : IUpdateable
+	public class ActionWithFrequency : IUpdateable
 	{
 		private float _currentTime = 0;
-		public float TotalTime { get; }
+		public float Period { get; }
 		public bool IsRunning { get; private set; }
 		private readonly Action _action;
 
-		public ActionOverTime(float time, Action<float> action, bool giveLerp = false)
+		public ActionWithFrequency(Action action, float period)
 		{
-			this.TotalTime = time;
-			if (giveLerp)
-			{
-				this._action = () => action(_currentTime / TotalTime);
-			}
-			else
-			{
-				this._action = () => action(_currentTime);
-			}
-		}
-
-		public ActionOverTime(float time, Action action)
-		{
-			this.TotalTime = time;
-			this._action = action;
+			Period = period;
+			_action = action;
 		}
 
 		/// <summary>
@@ -55,13 +42,10 @@ namespace Packages.UpdateManagement
 		public void OnUpdate()
 		{
 			_currentTime += Time.deltaTime;
-			if (_currentTime > TotalTime) _currentTime = TotalTime;
+			if (_currentTime < Period)
+				return;
+			_currentTime = 0;
 			_action();
-			if (_currentTime >= TotalTime)
-			{
-				_currentTime = 0;
-				UpdateManager.UnSubscribe(this);
-			}
 		}
 	}
 }
