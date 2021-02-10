@@ -34,10 +34,10 @@ namespace Packages.UpdateManagement
 		/// </summary>
 		public void StartAction()
 		{
-			IsRunning = true;
 			_currentTime = 0;
 			if (!IsRunning)
 				UpdateManager.Subscribe(this);
+			IsRunning = true;
 		}
 
 		/// <summary>
