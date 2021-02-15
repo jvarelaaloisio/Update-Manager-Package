@@ -6,27 +6,49 @@ namespace Packages.UpdateManagement
 	public class ActionOverTime : IUpdateable
 	{
 		private float _currentTime = 0;
-		public float TotalTime { get; }
+
+		public float Duration { get; }
 		public bool IsRunning { get; private set; }
 		private readonly Action _action;
+		private readonly Action _onFinish;
 
-		public ActionOverTime(float time, Action<float> action, bool giveLerp = false)
+		public ActionOverTime(float duration, Action<float> action, bool giveLerp = false)
 		{
-			this.TotalTime = time;
+			this.Duration = duration;
 			if (giveLerp)
 			{
-				this._action = () => action(_currentTime / TotalTime);
+				this._action = () => action(_currentTime / Duration);
 			}
 			else
 			{
 				this._action = () => action(_currentTime);
 			}
 		}
-
-		public ActionOverTime(float time, Action action)
+		public ActionOverTime(float duration, Action<float> action, Action onFinish, bool giveLerp = false)
 		{
-			this.TotalTime = time;
+			this.Duration = duration;
+			if (giveLerp)
+			{
+				this._action = () => action(_currentTime / Duration);
+			}
+			else
+			{
+				this._action = () => action(_currentTime);
+			}
+
+			_onFinish = onFinish;
+		}
+
+		public ActionOverTime(float duration, Action action)
+		{
+			this.Duration = duration;
 			this._action = action;
+		}
+		public ActionOverTime(float duration, Action action, Action onFinish)
+		{
+			this.Duration = duration;
+			this._action = action;
+			_onFinish = onFinish;
 		}
 
 		/// <summary>
@@ -55,11 +77,12 @@ namespace Packages.UpdateManagement
 		public void OnUpdate()
 		{
 			_currentTime += Time.deltaTime;
-			if (_currentTime > TotalTime) _currentTime = TotalTime;
+			if (_currentTime > Duration) _currentTime = Duration;
 			_action();
-			if (_currentTime >= TotalTime)
+			if (_currentTime >= Duration)
 			{
 				_currentTime = 0;
+				_onFinish?.Invoke();
 				UpdateManager.UnSubscribe(this);
 			}
 		}
