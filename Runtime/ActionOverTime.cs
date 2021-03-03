@@ -77,14 +77,15 @@ namespace Packages.UpdateManagement
 		public void OnUpdate()
 		{
 			_currentTime += Time.deltaTime;
-			if (_currentTime > Duration) _currentTime = Duration;
+			if (_currentTime > Duration)
+				_currentTime = Duration;
 			_action();
-			if (_currentTime >= Duration)
-			{
-				_currentTime = 0;
-				_onFinish?.Invoke();
-				UpdateManager.UnSubscribe(this);
-			}
+			if (!(_currentTime >= Duration))
+				return;
+			_currentTime = 0;
+			_onFinish?.Invoke();
+			UpdateManager.UnSubscribe(this);
+			IsRunning = false;
 		}
 	}
 }
