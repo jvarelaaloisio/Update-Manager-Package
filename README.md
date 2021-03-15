@@ -14,7 +14,8 @@ Update management system made to give control on Unity's Update method
 		- SubscribeLate
 	4. On runtime, the UpdateManager will map or create itself if there is no component in the scene.
 		There is no need to create an object manually, but won't create any problems.
-		The UpdateManager implements the Singleton Pattern.
+		(The UpdateManager implements the Singleton Pattern).
+[See the Singleton Pattern for more information](http://wiki.unity3d.com/index.php/Singleton "Unity's Singleton Doc")
 ### Unsubscribing
 	1. Unsubscribe from the UpdateManager by calling the static methods:
 		- UnSubscribe
