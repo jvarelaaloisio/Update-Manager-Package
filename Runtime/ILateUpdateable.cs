@@ -1,4 +1,4 @@
-﻿namespace Packages.UpdateManagement
+﻿namespace VarelaAloisio.UpdateManagement.Runtime
 {
 	public interface ILateUpdateable
 	{

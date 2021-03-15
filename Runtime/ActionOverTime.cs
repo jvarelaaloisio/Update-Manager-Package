@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Packages.UpdateManagement
+namespace VarelaAloisio.UpdateManagement.Runtime
 {
 	public class ActionOverTime : IUpdateable
 	{
 		private float _currentTime = 0;
+		private readonly Action _action;
+		private readonly Action _onFinish;
 
 		public float Duration { get; }
 		public bool IsRunning { get; private set; }
-		private readonly Action _action;
-		private readonly Action _onFinish;
 
 		public ActionOverTime(float duration, Action<float> action, bool giveLerp = false)
 		{
@@ -24,16 +24,17 @@ namespace Packages.UpdateManagement
 				this._action = () => action(_currentTime);
 			}
 		}
+
 		public ActionOverTime(float duration, Action<float> action, Action onFinish, bool giveLerp = false)
 		{
-			this.Duration = duration;
+			Duration = duration;
 			if (giveLerp)
 			{
-				this._action = () => action(_currentTime / Duration);
+				_action = () => action(_currentTime / Duration);
 			}
 			else
 			{
-				this._action = () => action(_currentTime);
+				_action = () => action(_currentTime);
 			}
 
 			_onFinish = onFinish;
@@ -44,6 +45,7 @@ namespace Packages.UpdateManagement
 			this.Duration = duration;
 			this._action = action;
 		}
+
 		public ActionOverTime(float duration, Action action, Action onFinish)
 		{
 			this.Duration = duration;

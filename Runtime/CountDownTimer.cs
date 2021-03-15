@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Packages.UpdateManagement
+namespace VarelaAloisio.UpdateManagement.Runtime
 {
 	public class CountDownTimer : IUpdateable
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Packages.UpdateManagement
+namespace VarelaAloisio.UpdateManagement.Runtime
 {
 	public class ActionWithFrequency : ActionWithPeriod
 	{
