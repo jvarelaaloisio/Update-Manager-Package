@@ -45,7 +45,8 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isPause)
 				return;
 			_update?.Invoke();
-			var enumerator = _updateDictionary.GetEnumerator();
+			var updateClone = new Dictionary<int, Action>(_updateDictionary);
+			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				enumerator.Current.Value?.Invoke();
@@ -58,11 +59,13 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isPause)
 				return;
 			_fixedUpdate?.Invoke();
-			var enumerator = _fixedUpdateDictionary.GetEnumerator();
+			var updateClone = new Dictionary<int, Action>(_updateDictionary);
+			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				enumerator.Current.Value?.Invoke();
 			}
+
 			enumerator.Dispose();
 		}
 
@@ -71,11 +74,13 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isPause)
 				return;
 			_lateUpdate?.Invoke();
-			var enumerator = _lateUpdateDictionary.GetEnumerator();
+			var updateClone = new Dictionary<int, Action>(_updateDictionary);
+			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				enumerator.Current.Value?.Invoke();
 			}
+
 			enumerator.Dispose();
 		}
 
@@ -105,6 +110,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
 				Instance._lateUpdateDictionary.Remove(sceneIndex);
 		}
+
 		/// <summary>
 		/// Sets the Pause Flag (Does not affect physics, only the <b>OnUpdate</b> method)
 		/// </summary>
@@ -144,10 +150,11 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			if (_isQuittingApplication)
 				return;
-			if(!Instance._updateDictionary.ContainsKey(sceneIndex))
+			if (!Instance._updateDictionary.ContainsKey(sceneIndex))
 				Instance._updateDictionary.Add(sceneIndex, null);
 			Instance._updateDictionary[sceneIndex] += updateable.OnUpdate;
 		}
+
 		/// <summary>
 		/// Unsubscribes from Update
 		/// </summary>
@@ -191,7 +198,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			if (_isQuittingApplication)
 				return;
-			if(!Instance._fixedUpdateDictionary.ContainsKey(sceneIndex))
+			if (!Instance._fixedUpdateDictionary.ContainsKey(sceneIndex))
 				Instance._fixedUpdateDictionary.Add(sceneIndex, null);
 			Instance._fixedUpdateDictionary[sceneIndex] += fixedUpdateable.OnFixedUpdate;
 		}
@@ -239,7 +246,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			if (_isQuittingApplication)
 				return;
-			if(!Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
+			if (!Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
 				Instance._lateUpdateDictionary.Add(sceneIndex, null);
 			Instance._lateUpdateDictionary[sceneIndex] += lateUpdateable.OnLateUpdate;
 		}
