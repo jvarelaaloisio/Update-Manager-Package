@@ -59,7 +59,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isPause)
 				return;
 			_fixedUpdate?.Invoke();
-			var updateClone = new Dictionary<int, Action>(_updateDictionary);
+			var updateClone = new Dictionary<int, Action>(_fixedUpdateDictionary);
 			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
@@ -74,7 +74,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isPause)
 				return;
 			_lateUpdate?.Invoke();
-			var updateClone = new Dictionary<int, Action>(_updateDictionary);
+			var updateClone = new Dictionary<int, Action>(_lateUpdateDictionary);
 			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
