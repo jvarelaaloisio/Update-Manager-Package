@@ -9,11 +9,13 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public float Period { get; }
 		public bool IsRunning { get; private set; }
 		private readonly Action _action;
+		private readonly int _sceneIndex;
 
-		public ActionWithPeriod(Action action, float period)
+		public ActionWithPeriod(Action action, float period, int sceneIndex)
 		{
 			Period = period;
 			_action = action;
+			_sceneIndex = sceneIndex;
 		}
 
 		/// <summary>
@@ -23,7 +25,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			_currentTime = 0;
 			if (!IsRunning)
-				UpdateManager.Subscribe(this);
+				UpdateManager.Subscribe(this, _sceneIndex);
 			IsRunning = true;
 		}
 
@@ -33,7 +35,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public void StopAction()
 		{
 			IsRunning = false;
-			UpdateManager.UnSubscribe(this);
+			UpdateManager.UnSubscribe(this, _sceneIndex);
 		}
 
 		/// <summary>

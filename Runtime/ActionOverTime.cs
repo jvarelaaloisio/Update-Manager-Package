@@ -5,6 +5,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 {
 	public class ActionOverTime : IUpdateable
 	{
+		private readonly int _sceneIndex;
 		private float _currentTime = 0;
 		private readonly Action _action;
 		private readonly Action _onFinish;
@@ -12,45 +13,43 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public float Duration { get; }
 		public bool IsRunning { get; private set; }
 
-		public ActionOverTime(float duration, Action<float> action, bool giveLerp = false)
-		{
-			this.Duration = duration;
-			if (giveLerp)
-			{
-				this._action = () => action(_currentTime / Duration);
-			}
-			else
-			{
-				this._action = () => action(_currentTime);
-			}
-		}
-
-		public ActionOverTime(float duration, Action<float> action, Action onFinish, bool giveLerp = false)
+		public ActionOverTime(float duration, Action<float> action, int sceneIndex, bool giveLerp = false)
 		{
 			Duration = duration;
+			_sceneIndex = sceneIndex;
+
 			if (giveLerp)
-			{
 				_action = () => action(_currentTime / Duration);
-			}
 			else
-			{
 				_action = () => action(_currentTime);
-			}
-
-			_onFinish = onFinish;
 		}
 
-		public ActionOverTime(float duration, Action action)
+		public ActionOverTime(float duration, Action<float> action, Action onFinish, int sceneIndex,
+			bool giveLerp = false)
 		{
-			this.Duration = duration;
-			this._action = action;
+			Duration = duration;
+			_onFinish = onFinish;
+			_sceneIndex = sceneIndex;
+
+			if (giveLerp)
+				_action = () => action(_currentTime / Duration);
+			else
+				_action = () => action(_currentTime);
 		}
 
-		public ActionOverTime(float duration, Action action, Action onFinish)
+		public ActionOverTime(float duration, Action action, int sceneIndex)
 		{
-			this.Duration = duration;
-			this._action = action;
+			Duration = duration;
+			_action = action;
+			_sceneIndex = sceneIndex;
+		}
+
+		public ActionOverTime(float duration, Action action, Action onFinish, int sceneIndex)
+		{
+			Duration = duration;
+			_action = action;
 			_onFinish = onFinish;
+			_sceneIndex = sceneIndex;
 		}
 
 		/// <summary>
@@ -60,7 +59,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			_currentTime = 0;
 			if (!IsRunning)
-				UpdateManager.Subscribe(this);
+				UpdateManager.Subscribe(this, _sceneIndex);
 			IsRunning = true;
 		}
 
@@ -70,7 +69,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public void StopAction()
 		{
 			IsRunning = false;
-			UpdateManager.UnSubscribe(this);
+			UpdateManager.UnSubscribe(this, _sceneIndex);
 		}
 
 		/// <summary>
@@ -86,7 +85,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 				return;
 			_currentTime = 0;
 			_onFinish?.Invoke();
-			UpdateManager.UnSubscribe(this);
+			UpdateManager.UnSubscribe(this, _sceneIndex);
 			IsRunning = false;
 		}
 	}

@@ -7,13 +7,16 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 	{
 		private float _currentTime = 0;
 		public float TotalTime { get; }
-		private readonly Action onFinished;
+		private readonly Action _onFinished;
 		public bool IsTicking { get; private set; }
 
-		public CountDownTimer(float time, Action onFinished)
+		private readonly int _sceneIndex;
+
+		public CountDownTimer(float time, Action onFinished, int sceneIndex)
 		{
-			this.TotalTime = time;
-			this.onFinished = onFinished;
+			TotalTime = time;
+			_onFinished = onFinished;
+			_sceneIndex = sceneIndex;
 		}
 
 		/// <summary>
@@ -23,7 +26,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		{
 			_currentTime = 0;
 			if (!IsTicking)
-				UpdateManager.Subscribe(this);
+				UpdateManager.Subscribe(this, _sceneIndex);
 			IsTicking = true;
 		}
 
@@ -33,7 +36,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public void StopTimer()
 		{
 			IsTicking = false;
-			UpdateManager.UnSubscribe(this);
+			UpdateManager.UnSubscribe(this, _sceneIndex);
 		}
 
 		/// <summary>
@@ -42,11 +45,10 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		public void OnUpdate()
 		{
 			_currentTime += Time.deltaTime;
-			if (_currentTime >= TotalTime)
-			{
-				StopTimer();
-				onFinished?.Invoke();
-			}
+			if (!(_currentTime >= TotalTime))
+				return;
+			StopTimer();
+			_onFinished?.Invoke();
 		}
 	}
 }
