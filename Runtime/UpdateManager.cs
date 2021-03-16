@@ -85,11 +85,11 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		/// (DEPRECATED) Resets the delegates.
 		/// Use this when changing scenes
 		/// </summary>
-		public void ResetUpdateDelegates()
+		public static void ResetUpdateDelegates()
 		{
-			_update = null;
-			_fixedUpdate = null;
-			_lateUpdate = null;
+			Instance._update = null;
+			Instance._fixedUpdate = null;
+			Instance._lateUpdate = null;
 		}
 
 		/// <summary>
@@ -229,7 +229,6 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 				return;
 			Instance._lateUpdate -= lateUpdateable.OnLateUpdate;
 		}
-
 
 		/// <summary>
 		/// subscribes to LateUpdate
