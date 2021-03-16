@@ -139,7 +139,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		/// Subscribes to Update
 		/// </summary>
 		/// <param name="updateable"></param>
-		/// <param name="sceneIndex"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
 		public static void Subscribe(IUpdateable updateable, int sceneIndex)
 		{
 			if (_isQuittingApplication)
@@ -151,8 +151,8 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		/// <summary>
 		/// Unsubscribes from Update
 		/// </summary>
-		/// <param name="sceneIndex">index of the scene in the build settings</param>
 		/// <param name="updateable"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
 		public static void UnSubscribe(IUpdateable updateable, int sceneIndex)
 		{
 			if (_isQuittingApplication || !Instance._updateDictionary.ContainsKey(sceneIndex))
@@ -161,7 +161,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		}
 
 		/// <summary>
-		/// subscribes to FixedUpdate
+		/// (DEPRECATED) subscribes to FixedUpdate
 		/// </summary>
 		/// <param name="fixedUpdateable"></param>
 		public static void Subscribe(IFixedUpdateable fixedUpdateable)
@@ -172,7 +172,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 		}
 
 		/// <summary>
-		/// Unsubscribes from FixedUpdate
+		/// (DEPRECATED) Unsubscribes from FixedUpdate
 		/// </summary>
 		/// <param name="fixedUpdateable"></param>
 		public static void UnSubscribe(IFixedUpdateable fixedUpdateable)
@@ -180,6 +180,32 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isQuittingApplication)
 				return;
 			Instance._update -= fixedUpdateable.OnFixedUpdate;
+		}
+
+		/// <summary>
+		/// subscribes to FixedUpdate
+		/// </summary>
+		/// <param name="fixedUpdateable"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
+		public static void Subscribe(IFixedUpdateable fixedUpdateable, int sceneIndex)
+		{
+			if (_isQuittingApplication)
+				return;
+			if(!Instance._fixedUpdateDictionary.ContainsKey(sceneIndex))
+				Instance._fixedUpdateDictionary.Add(sceneIndex, null);
+			Instance._fixedUpdateDictionary[sceneIndex] += fixedUpdateable.OnFixedUpdate;
+		}
+
+		/// <summary>
+		/// Unsubscribes from FixedUpdate
+		/// </summary>
+		/// <param name="fixedUpdateable"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
+		public static void UnSubscribe(IFixedUpdateable fixedUpdateable, int sceneIndex)
+		{
+			if (_isQuittingApplication || !Instance._fixedUpdateDictionary.ContainsKey(sceneIndex))
+				return;
+			Instance._fixedUpdateDictionary[sceneIndex] -= fixedUpdateable.OnFixedUpdate;
 		}
 
 		/// <summary>
@@ -202,6 +228,33 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isQuittingApplication)
 				return;
 			Instance._lateUpdate -= lateUpdateable.OnLateUpdate;
+		}
+
+
+		/// <summary>
+		/// subscribes to LateUpdate
+		/// </summary>
+		/// <param name="lateUpdateable"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
+		public static void Subscribe(ILateUpdateable lateUpdateable, int sceneIndex)
+		{
+			if (_isQuittingApplication)
+				return;
+			if(!Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
+				Instance._lateUpdateDictionary.Add(sceneIndex, null);
+			Instance._lateUpdateDictionary[sceneIndex] += lateUpdateable.OnLateUpdate;
+		}
+
+		/// <summary>
+		/// Unsubscribes from LateUpdate
+		/// </summary>
+		/// <param name="lateUpdateable"></param>
+		/// <param name="sceneIndex">index of the scene in the build settings</param>
+		public static void UnSubscribe(ILateUpdateable lateUpdateable, int sceneIndex)
+		{
+			if (_isQuittingApplication || !Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
+				return;
+			Instance._lateUpdateDictionary[sceneIndex] -= lateUpdateable.OnLateUpdate;
 		}
 
 		#endregion
