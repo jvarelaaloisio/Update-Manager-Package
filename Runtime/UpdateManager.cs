@@ -49,7 +49,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				enumerator.Current.Value?.Invoke();
+				enumerator.Current.Value.Invoke();
 			}
 			enumerator.Dispose();
 		}
@@ -63,7 +63,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				enumerator.Current.Value?.Invoke();
+				enumerator.Current.Value.Invoke();
 			}
 
 			enumerator.Dispose();
@@ -78,7 +78,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			var enumerator = updateClone.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				enumerator.Current.Value?.Invoke();
+				enumerator.Current.Value.Invoke();
 			}
 
 			enumerator.Dispose();
@@ -151,7 +151,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isQuittingApplication)
 				return;
 			if (!Instance._updateDictionary.ContainsKey(sceneIndex))
-				Instance._updateDictionary.Add(sceneIndex, null);
+				Instance._updateDictionary.Add(sceneIndex, delegate { });
 			Instance._updateDictionary[sceneIndex] += updateable.OnUpdate;
 		}
 
@@ -199,7 +199,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isQuittingApplication)
 				return;
 			if (!Instance._fixedUpdateDictionary.ContainsKey(sceneIndex))
-				Instance._fixedUpdateDictionary.Add(sceneIndex, null);
+				Instance._fixedUpdateDictionary.Add(sceneIndex, delegate { });
 			Instance._fixedUpdateDictionary[sceneIndex] += fixedUpdateable.OnFixedUpdate;
 		}
 
@@ -247,7 +247,7 @@ namespace VarelaAloisio.UpdateManagement.Runtime
 			if (_isQuittingApplication)
 				return;
 			if (!Instance._lateUpdateDictionary.ContainsKey(sceneIndex))
-				Instance._lateUpdateDictionary.Add(sceneIndex, null);
+				Instance._lateUpdateDictionary.Add(sceneIndex, delegate { });
 			Instance._lateUpdateDictionary[sceneIndex] += lateUpdateable.OnLateUpdate;
 		}
 
